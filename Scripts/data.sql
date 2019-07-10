@@ -14,3 +14,4 @@ INSERT INTO employee(eno, ename, title, salary,gender, dno, joindate) VALUES
 (3427,'최종철',4,1500000,0, 2, '2019-05-01');
 
 select * from department;
+select * from title;
