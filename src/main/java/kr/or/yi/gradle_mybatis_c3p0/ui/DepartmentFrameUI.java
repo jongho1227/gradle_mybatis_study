@@ -7,31 +7,34 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import kr.or.yi.gradle_mybatis_c3p0.dao.DepartmentDao;
+import kr.or.yi.gradle_mybatis_c3p0.dao.DepartmentDaoImpl;
+import kr.or.yi.gradle_mybatis_c3p0.dto.Department;
+import kr.or.yi.gradle_mybatis_c3p0.ui.content.PanelDepartment;
+import kr.or.yi.gradle_mybatis_c3p0.ui.list.DepartmentList;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-
-import kr.or.yi.gradle_mybatis_c3p0.dao.TitleDao;
-import kr.or.yi.gradle_mybatis_c3p0.dao.TitleDaoImpl;
-import kr.or.yi.gradle_mybatis_c3p0.dto.Title;
-import kr.or.yi.gradle_mybatis_c3p0.ui.content.PanelTitle;
-import kr.or.yi.gradle_mybatis_c3p0.ui.list.TitleList;
 
 @SuppressWarnings("serial")
-public class TitleFrameUI extends JFrame implements ActionListener {
-	private TitleDao dao;
+public class DepartmentFrameUI extends JFrame implements ActionListener {
 	private JButton btnAdd;
-	private PanelTitle pContent;
-	private List<Title> titleList;
-	private TitleList pList;
+	private PanelDepartment pContent;
+	private List<Department> deptList;
+	private DepartmentList pList;
 	private JButton btnCancel;
+	private DepartmentDao dao;
 	private JPopupMenu popupMenu;
 	private JMenuItem mntmUpdate;
 	private JMenuItem mntmDelete;
-
-	public TitleFrameUI() {
-		dao = new TitleDaoImpl();
+	
+	public DepartmentFrameUI() {
+		dao = new DepartmentDaoImpl();
 		initComponents();
 	}
 
@@ -42,9 +45,9 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 		getContentPane().add(pMain, BorderLayout.CENTER);
 		pMain.setLayout(new BorderLayout(0, 0));
 
-		pContent = new PanelTitle("직책");
+		pContent = new PanelDepartment("부서");
 		
-
+		
 		pMain.add(pContent, BorderLayout.CENTER);
 
 		JPanel pBtns = new JPanel();
@@ -58,11 +61,15 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 		btnCancel.addActionListener(this);
 		pBtns.add(btnCancel);
 
-		pList = new TitleList("직책 목록");
+		pList = new DepartmentList("부서");
+		
+		deptList = dao.selectDepartmentByAll();
+		pList.setItemList(deptList);
+		pList.reloadData();
+		
 		getContentPane().add(pList, BorderLayout.SOUTH);
 		
 		popupMenu = new JPopupMenu();
-		pList.add(popupMenu, BorderLayout.NORTH);
 		
 		mntmUpdate = new JMenuItem("수정");
 		mntmUpdate.addActionListener(this);
@@ -72,15 +79,15 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 		mntmDelete.addActionListener(this);
 		popupMenu.add(mntmDelete);
 		
+		addPopup(pList, popupMenu);
 		pList.setPopupMenu(popupMenu);
 		
-		reloadList();
-		clearContent();
+		
+		pContent.clearComponent(deptList.size() == 0 ? 1 : deptList.size() + 1);
 	}
-
 	private void reloadList() {
-		titleList = dao.selectTitleByAll();
-		pList.setItemList(titleList);
+		deptList = dao.selectDepartmentByAll();
+		pList.setItemList(deptList);
 		pList.reloadData();
 	}
 
@@ -91,56 +98,74 @@ public class TitleFrameUI extends JFrame implements ActionListener {
 		if (e.getSource() == mntmUpdate) {
 			actionPerformedMntmUpdate(e);
 		}
+
 		if (e.getSource() == btnCancel) {
 			actionPerformedBtnCancel(e);
 		}
 		if (e.getSource() == btnAdd) {
-			if (e.getActionCommand().equals("추가")) {
-				actionPerformedBtnAdd(e);
-			}
-			if (e.getActionCommand().equals("수정")) {
+			if(btnAdd.getActionCommand().equals("추가")) {
+			actionPerformedBtnAdd(e);
+			}else if(btnAdd.getActionCommand().equals("수정")) {
 				actionPerformedBtnUpdate(e);
 			}
 		}
 	}
 
 	private void actionPerformedBtnUpdate(ActionEvent e) {
-		Title updateTitle = pContent.getItem();
-		int res = dao.updateTitle(updateTitle);
-		refreshUI(updateTitle, res);
+		Department dept = pContent.getItem();
+		int res = dao.updateDepartment(dept);
+		refreshUI(dept, res);
 		btnAdd.setText("추가");
+		
 	}
 
 	protected void actionPerformedBtnAdd(ActionEvent e) {
-		Title insertTitle = pContent.getItem();
-		int res = dao.insertTitle(insertTitle);
-		refreshUI(insertTitle, res);
+		Department dept = pContent.getItem();
+		int res = dao.insertDepartment(dept);
+		refreshUI(dept, res);
 	}
-
+	
 	private void clearContent() {
-		pContent.clearComponent(titleList.size() == 0 ? 1 : titleList.size() + 1);
+		pContent.clearComponent(deptList.size() == 0 ? 1 : deptList.size() + 1);
 	}
 
 	protected void actionPerformedBtnCancel(ActionEvent e) {
 		clearContent();
 	}
 	
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
 	protected void actionPerformedMntmUpdate(ActionEvent e) {
-		Title updateTitle = pList.getSelectedItem();
-		pContent.setItem(updateTitle);
+		Department dept = pList.getSelectedItem();
+		pContent.setItem(dept);
 		btnAdd.setText("수정");
 	}
-	
 	protected void actionPerformedMntmDelete(ActionEvent e) {
-		Title delTitle = pList.getSelectedItem();
-		int res = dao.deleteTitle(delTitle);
-		refreshUI(delTitle, res);
+		Department dept = pList.getSelectedItem();
+		int res = dao.deleteDepartment(dept);
+		refreshUI(dept, res);
 	}
-
-	private void refreshUI(Title item, int res) {
+	
+	private void refreshUI(Department item, int res) {
 		String message = res == 1 ? "성공" : "실패";
 		JOptionPane.showMessageDialog(null, item + message);
 		reloadList();
 		clearContent();
 	}
+	
 }

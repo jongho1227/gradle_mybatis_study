@@ -32,8 +32,9 @@ public class TitleDaoTest extends AbstractTest {
 		log.debug(Thread.currentThread().getStackTrace()[1].getMethodName() + "()");
 		List<Title> titleList = titleDao.selectTitleByAll();
 		Assert.assertNotNull(titleList);
+		
 		for(Title t : titleList) {
-			log.debug(String.format("%d -> %s%n", t.getTitleNo(), t.getTitleName()));
+			log.debug(String.format("%d -> %s", t.getTitleCode(), t.getTitleName()));
 		}
 	}
 	
@@ -42,36 +43,45 @@ public class TitleDaoTest extends AbstractTest {
 		log.debug(Thread.currentThread().getStackTrace()[1].getMethodName() + "()");
 		Title insertTitle = new Title(6, "인턴");
 		int res = titleDao.insertTitle(insertTitle);
-		log.debug("result = "+res);
 		Assert.assertEquals(1, res);
 	}
+	
 	@Test
 	public void test03UpdateTitle() {
 		log.debug(Thread.currentThread().getStackTrace()[1].getMethodName() + "()");
 		Title updateTitle = new Title(6, "계약직");
 		int res = titleDao.updateTitle(updateTitle);
-		log.debug("result = "+res);
 		Assert.assertEquals(1, res);
 	}
+	
 	
 	@Test
 	public void test04DeleteTitle() {
 		log.debug(Thread.currentThread().getStackTrace()[1].getMethodName() + "()");
 		Title deleteTitle = new Title(6);
 		int res = titleDao.deleteTitle(deleteTitle);
-		log.debug("result = "+res);
 		Assert.assertEquals(1, res);
 	}
-	
+
 	@Test
-	public void test05SelectByCode() {
+	public void test05SelectTitleByCode() {
 		log.debug(Thread.currentThread().getStackTrace()[1].getMethodName() + "()");
-		Title selectTitle = new Title(1);
-		Title searchTitle = titleDao.selectTitleByCode(selectTitle);
-		log.debug("searchTitle = "+ searchTitle);
+		Title seletedTitle = new Title(1);
+		Title searchTitle = titleDao.selectTitleByCode(seletedTitle);
+		log.debug("search Title" + searchTitle);
 		Assert.assertNotNull(searchTitle);
 	}
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -10,11 +10,12 @@ import kr.or.yi.gradle_mybatis_c3p0.jdbc.MyBatisSqlSessionFactory;
 
 public class MyBatisSqlSessionFactoryTest {
 	private static final Log log = LogFactory.getLog(MyBatisSqlSessionFactoryTest.class);
+	
 	@Test
 	public void testOpenSession() {
 		log.debug("testOpenSession()");
 		SqlSession session = MyBatisSqlSessionFactory.openSession();
-		log.debug("session"+session);
+		log.debug("session " + session);
 		Assert.assertNotNull(session);
 	}
 
