@@ -4,6 +4,11 @@ public class Title {
 	private int titleCode;
 	private String titleName;
 
+	
+	public Title() {
+		
+	}
+
 	public Title(int titleNo) {
 		this.titleCode = titleNo;
 	}
