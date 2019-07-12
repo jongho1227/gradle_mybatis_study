@@ -50,11 +50,11 @@ public class ErpApplication extends JFrame implements ActionListener {
 	}
 
 	protected void actionPerformedBtnTitle(ActionEvent e) {
-		TitleFrameUI frame = new TitleFrameUI();
+		TitleFrameUI frame = new TitleFrameUI("직책관리");
 		frame.setVisible(true);
 	}
 	protected void actionPerformedBtnDepartment(ActionEvent e) {
-		DepartmentFrameUI frame = new DepartmentFrameUI();
+		DepartmentFrameUI frame = new DepartmentFrameUI("부서관리");
 		frame.setVisible(true);
 	}
 }

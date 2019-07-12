@@ -10,7 +10,7 @@ import javax.swing.border.TitledBorder;
 import kr.or.yi.gradle_mybatis_c3p0.dto.Department;
 
 @SuppressWarnings("serial")
-public class PanelDepartment extends PanelAbstract<Department> {
+public class PanelDepartment extends AbstractPanel<Department> {
 	private JTextField tfDeptNo;
 	private JTextField tfDeptName;
 	private JTextField tfFloor;

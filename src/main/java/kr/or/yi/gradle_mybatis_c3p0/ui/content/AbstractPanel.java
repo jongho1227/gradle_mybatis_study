@@ -3,10 +3,10 @@ package kr.or.yi.gradle_mybatis_c3p0.ui.content;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public abstract class PanelAbstract<T> extends JPanel {
+public abstract class AbstractPanel<T> extends JPanel {
 	
 
-	public PanelAbstract(String title) {
+	public AbstractPanel(String title) {
 		initComponents(title);
 	}
 

@@ -10,7 +10,7 @@ import javax.swing.border.TitledBorder;
 import kr.or.yi.gradle_mybatis_c3p0.dto.Title;
 
 @SuppressWarnings("serial")
-public class PanelTitle extends PanelAbstract<Title> {
+public class PanelTitle extends AbstractPanel<Title> {
 	private JTextField tfTitleNo;
 	private JTextField tfTitleName;
 
