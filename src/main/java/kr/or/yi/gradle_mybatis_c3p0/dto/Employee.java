@@ -3,100 +3,111 @@ package kr.or.yi.gradle_mybatis_c3p0.dto;
 import java.util.Date;
 
 public class Employee {
-	private int eno;
-	private String ename;
+	private int eNo;
+	private String eName;
 	private int salary;
 	private Department dno;
-	private int gender;
-	private Date joindate;
+	private boolean gender;
+	private Date joinDate;
 	private Title title;
-	
+
 	public Employee() {
-		
-	}
-	
-	public Employee(int eno) {
-		this.eno = eno;
+		// TODO Auto-generated constructor stub
 	}
 
-	public Employee(int eno, String ename, int salary, Department dno, int gender, Date joindate, Title title) {
-		this.eno = eno;
-		this.ename = ename;
+	public Employee(int eNo, String eName) {
+		this.eNo = eNo;
+		this.eName = eName;
+	}
+
+	public Employee(int eNo, String eName, int salary, Department dno, boolean gender, Date joinDate, Title title) {
+		this.eNo = eNo;
+		this.eName = eName;
 		this.salary = salary;
 		this.dno = dno;
 		this.gender = gender;
-		this.joindate = joindate;
+		this.joinDate = joinDate;
 		this.title = title;
 	}
 
-	public int getEno() {
-		return eno;
+	public int geteNo() {
+		return eNo;
 	}
-	public void setEno(int eno) {
-		this.eno = eno;
+
+	public void seteNo(int eNo) {
+		this.eNo = eNo;
 	}
-	public String getEname() {
-		return ename;
+
+	public String geteName() {
+		return eName;
 	}
-	public void setEname(String ename) {
-		this.ename = ename;
+
+	public void seteName(String eName) {
+		this.eName = eName;
 	}
+
 	public int getSalary() {
 		return salary;
 	}
+
 	public void setSalary(int salary) {
 		this.salary = salary;
 	}
+
 	public Department getDno() {
 		return dno;
 	}
+
 	public void setDno(Department dno) {
 		this.dno = dno;
 	}
-	public int getGender() {
+
+	public boolean isGender() {
 		return gender;
 	}
-	public void setGender(int gender) {
+
+	public void setGender(boolean gender) {
 		this.gender = gender;
 	}
-	public Date getJoindate() {
-		return joindate;
+
+	public Date getJoinDate() {
+		return joinDate;
 	}
-	public void setJoindate(Date joindate) {
-		this.joindate = joindate;
+
+	public void setJoinDate(Date joinDate) {
+		this.joinDate = joinDate;
 	}
+
 	public Title getTitle() {
 		return title;
 	}
+
 	public void setTitle(Title title) {
 		this.title = title;
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + eno;
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Employee other = (Employee) obj;
-		if (eno != other.eno)
-			return false;
-		return true;
-	}
+
+	
 	@Override
 	public String toString() {
-		return String.format("Employee [eno=%s, ename=%s, salary=%s, dno=%s, gender=%s, joindate=%s, title=%s]", eno,
-				ename, salary, dno, gender, joindate, title);
+		return String.format("[%s, %s, %s, %s, %s, %s, %s]", 
+				eNo, 
+				eName,
+				String.format("%,d", salary),
+				String.format("%s(%s층)", dno.getDeptName(), dno.getFloor()), 
+				gender ? "남자" : "여자",
+				String.format("%tF", joinDate),
+				String.format("%s(%d)", title.getTitleName(),title.getTitleCode()));
 	}
-	
-	
-	
+
+	public Object[] toArray() {
+		return new Object[] { 
+				String.format("E%06d", eNo), 
+				eName, 
+				String.format("%,d", salary),
+				String.format("%s(%s층)", dno.getDeptName(), dno.getFloor()), 
+				gender ? "남자" : "여자",
+				String.format("%tF", joinDate),
+				String.format("%s(%d)", title.getTitleName(),title.getTitleCode()),
+		};
+	}
 }
