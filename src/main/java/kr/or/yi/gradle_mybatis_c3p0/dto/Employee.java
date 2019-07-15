@@ -14,11 +14,19 @@ public class Employee {
 	public Employee() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+	public Employee(int eNo) {
+		this.eNo = eNo;
+	}
+	
+
 
 	public Employee(int eNo, String eName) {
 		this.eNo = eNo;
 		this.eName = eName;
 	}
+
 
 	public Employee(int eNo, String eName, int salary, Department dno, boolean gender, Date joinDate, Title title) {
 		this.eNo = eNo;
